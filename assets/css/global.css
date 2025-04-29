@@ -8,8 +8,8 @@ body {
 }
 
 .content {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     padding: 1rem;
     background-color: #fff;
 }
@@ -21,4 +21,24 @@ body {
         margin: 1rem auto;
         border-radius: 1rem;
     }
+}
+@media screen and (min-width: 380px) {
+    .pokemons {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (min-width: 576px) {
+    .pokemons {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .pokemons {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+.content h1 {
+    margin: 0;
 }
