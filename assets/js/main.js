@@ -1,17 +1,57 @@
 console.log("Miguel é um gostoso");
 const loadMoreButton = document.getElementById('loadMoreButton');
-let limit = 12;
-let offset  = 0;
-const maxRecords = 30;
+const select = document.getElementById('generation');
+let limit = 16;
+let offset;
+let maxRecords;
+
+window.addEventListener('load', function() {
+    
+    let valorGuardado = localStorage.getItem('geracaoSelecionada')
+    select.value = valorGuardado;
+    let offsetMaxRecords;
+    
+    switch (true) {
+        case valorGuardado === '0':
+            offsetMaxRecords = [0, 1302, 24];
+            break;
+        case valorGuardado === '1':
+            offsetMaxRecords = [0, 150];
+            break;
+        case valorGuardado === '2':
+            offsetMaxRecords = [151, 250];
+            break;
+        case valorGuardado === '3':
+            offsetMaxRecords = [251, 385];
+            break;
+        case valorGuardado === '4':
+            offsetMaxRecords = [386, 492];
+            break;
+        case valorGuardado === '5':
+            offsetMaxRecords = [493, 648];
+            break;
+        case valorGuardado === '6':
+            offsetMaxRecords = [649, 720];
+    }
+    offset = offsetMaxRecords[0];
+    maxRecords = offsetMaxRecords[1];
+    limit = offsetMaxRecords[2];
+    loadMoreItens(offset, limit);
+})
+
+select.addEventListener('change', function(e) {
+let valorSelecionado = e.target.value; 
+console.log(valorSelecionado)
+localStorage.setItem('geracaoSelecionada', valorSelecionado);
+location.reload();
+
+})
+
 
 const pokemonLista = document.getElementById('pokemonListen');
 
-
-pokeApi.getPokemons().then((pokemons = []) => {
-    pokemonLista.innerHTML = pokemons.map(convertPokemonToLi).join("")
-})
-
 function loadMoreItens(offset, limit){
+     
     pokeApi.getPokemons(offset, limit).then((pokemons = []) => {
         const newHtml = pokemons.map((pokemon) => ` 
            <li class="${pokemon.type} pokemon">
@@ -30,7 +70,6 @@ function loadMoreItens(offset, limit){
     })
 }
 
-loadMoreItens(offset, limit)
 
 loadMoreButton.addEventListener('click', () => {
     offset += limit
@@ -39,6 +78,7 @@ loadMoreButton.addEventListener('click', () => {
         limit =  (offset + limit) - maxRecords
         loadMoreButton.parentElement.removeChild(loadMoreButton)
     }
+    
     console.log(limit)
     loadMoreItens(offset, limit)
 
