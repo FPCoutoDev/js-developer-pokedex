@@ -14,6 +14,7 @@ window.addEventListener('load', function() {
     switch (true) {
         case valorGuardado === '0':
             offsetMaxRecords = [0, 1302, 24];
+            limit = offsetMaxRecords[2];
             break;
         case valorGuardado === '1':
             offsetMaxRecords = [0, 150];
@@ -33,9 +34,9 @@ window.addEventListener('load', function() {
         case valorGuardado === '6':
             offsetMaxRecords = [649, 720];
     }
+
     offset = offsetMaxRecords[0];
     maxRecords = offsetMaxRecords[1];
-    limit = offsetMaxRecords[2];
     loadMoreItens(offset, limit);
 })
 
@@ -46,8 +47,6 @@ localStorage.setItem('geracaoSelecionada', valorSelecionado);
 location.reload();
 
 })
-
-
 const pokemonLista = document.getElementById('pokemonListen');
 
 function loadMoreItens(offset, limit){
@@ -72,8 +71,8 @@ function loadMoreItens(offset, limit){
 
 
 loadMoreButton.addEventListener('click', () => {
+    
     offset += limit
-
     if (offset + limit > maxRecords){
         limit =  (offset + limit) - maxRecords
         loadMoreButton.parentElement.removeChild(loadMoreButton)

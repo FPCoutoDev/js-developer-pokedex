@@ -17,17 +17,19 @@
         return pokemon
     }
 
-    pokeApi.getPokemonDetail = (pokemon) => {
-        return fetch(pokemon.url)
-        .then((response) => response.json())
-        .then(convertPokemonApiDetailToPokemon)
-    }
-    pokeApi.getPokemonResults = (resultados) => {
-
-    }
-    pokeApi.getPokemons = (offset = 0, limit = 16) => {
-        const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`
-        return fetch(url)
+        pokeApi.getPokemonDetail = async (pokemon) => {
+            try {
+                return convertPokemonApiDetailToPokemon(
+                    await (await fetch(pokemon.url)).json()
+                );
+            } catch (error) {
+                console.error(`Erro na tentativa de leitura do URL:`, error);
+            }
+        };
+    pokeApi.getPokemons = async (offset = 0, limit = 16) => { 
+        try {
+            const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`
+            return await Promise.all(await(await fetch(url))).results
             .then((response) => response.json())  
             .then((jsonBody) => jsonBody.results)
             .then((pokemons) => pokemons.map(pokeApi.getPokemonDetail))
@@ -36,4 +38,6 @@
                 console.log(pokemonsDetails)
                 return pokemonsDetails
             })
-        }
+        } catch (error) {
+                console.error(`Erro na tentativa de leitura do URL:`, error);
+            }}
