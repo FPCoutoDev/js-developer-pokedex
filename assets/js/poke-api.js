@@ -11,33 +11,34 @@
 
         pokemon.types = types;
         pokemon.type = type;
+        pokemon.shinyPhoto = pokeDetail.sprites.other["official-artwork"].front_front_shiny;
+        pokemon.photo = pokeDetail.sprites.other["official-artwork"].front_default;
 
-        pokemon.photo = pokeDetail.sprites.other.dream_world.front_default
 
         return pokemon
     }
 
         pokeApi.getPokemonDetail = async (pokemon) => {
             try {
-                return convertPokemonApiDetailToPokemon(
-                    await (await fetch(pokemon.url)).json()
-                );
+                const response = await fetch(pokemon.url);
+                const jsonBody = await response.json();
+                return convertPokemonApiDetailToPokemon(jsonBody);
             } catch (error) {
                 console.error(`Erro na tentativa de leitura do URL:`, error);
             }
         };
-    pokeApi.getPokemons = async (offset = 0, limit = 16) => { 
-        try {
-            const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`
-            return await Promise.all(await(await fetch(url))).results
-            .then((response) => response.json())  
-            .then((jsonBody) => jsonBody.results)
-            .then((pokemons) => pokemons.map(pokeApi.getPokemonDetail))
-            .then((detailRequests) => Promise.all(detailRequests))
-            .then((pokemonsDetails) => {
-                console.log(pokemonsDetails)
-                return pokemonsDetails
-            })
-        } catch (error) {
-                console.error(`Erro na tentativa de leitura do URL:`, error);
-            }}
+
+        pokeApi.getPokemons = async (offset = 0, limit = 16) => {
+    try {
+        const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
+        const response = await fetch(url);
+        const jsonBody = await response.json();
+        const pokemons = jsonBody.results;
+
+        return Promise.all(
+            pokemons.map((pokemon) => pokeApi.getPokemonDetail(pokemon))
+        );
+    } catch (error) {
+        console.error("Erro na hora de extrair dados da API:", error);
+    }
+};
