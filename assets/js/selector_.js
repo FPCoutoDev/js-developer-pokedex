@@ -26,6 +26,18 @@ window.addEventListener('load', function() {
             break;
         case valorGuardado === '6':
             offsetMaxRecords = [649, 720];
+            break;
+        case valorGuardado === '7':
+            offsetMaxRecords = [721, 808];  
+            break;
+        case valorGuardado === '8':
+            offsetMaxRecords = [809, 904];
+            break; 
+        case valorGuardado === '9':
+            offsetMaxRecords = [905, 1025];
+            break;
+        case valorGuardado === '10':
+            offsetMaxRecords = [1057, 1302];
     }
 
     offset = offsetMaxRecords[0];
