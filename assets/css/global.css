@@ -34,15 +34,34 @@ header {
         border-radius: 1rem;
     }
 }
+@media screen and (max-width: 380px) {
+    
+    .pokemons{
+        grid-template-columns: 0.7fr 0.7fr;
+        align-items: center;
+        justify-content: center;
+    }
+    .pokemon {  
+        width: 90%;
+        height: 70%;
+    }
+.pokemons .detail img {
+    height: 65px;
+    align-self: flex-end;
+    transform: translateY(-10px)
+}
+}
 @media screen and (min-width: 380px) {
     .pokemons {
         grid-template-columns: 1fr 1fr;
     }
+    
 }
 
 @media screen and (min-width: 576px) {
     .pokemons {
         grid-template-columns: 1fr 1fr 1fr;
+
     }
 }
 

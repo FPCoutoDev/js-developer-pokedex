@@ -15,8 +15,7 @@
 
 }
 .pokemons .detail img {
-    height: 70px;
-    max-width: 90px;
+    height: 100px;
     align-self: flex-end;
 }
 .pokemon .number {
