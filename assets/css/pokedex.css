@@ -18,6 +18,9 @@
     height: 100px;
     align-self: flex-end;
 }
+.pokemons .detail img:hover{
+    cursor: pointer;
+}
 .pokemon .number {
     color: black;
     opacity: 0.4;
