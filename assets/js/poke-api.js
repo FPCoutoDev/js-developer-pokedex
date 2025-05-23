@@ -11,7 +11,7 @@
 
         pokemon.types = types;
         pokemon.type = type;
-        pokemon.shinyPhoto = pokeDetail.sprites.other["official-artwork"].front_front_shiny;
+        pokemon.shinyPhoto = pokeDetail.sprites.other["official-artwork"].front_shiny;
         pokemon.photo = pokeDetail.sprites.other["official-artwork"].front_default;
 
 
@@ -36,7 +36,12 @@
         const pokemons = jsonBody.results;
 
         return Promise.all(
-            pokemons.map((pokemon) => pokeApi.getPokemonDetail(pokemon))
+            pokemons.map(async  (pokemon) => {
+                const data = await pokeApi.getPokemonDetail(pokemon)
+                console.log(data)
+                return data
+            })
+            
         );
     } catch (error) {
         console.error("Erro na hora de extrair dados da API:", error);
