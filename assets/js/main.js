@@ -1,7 +1,9 @@
+// ideia: Ao passar o mouse por cima dos pokemons, trocar a imagem para a forma Shiny.
+
 console.log("Miguel é um gostoso");
 const loadMoreButton = document.getElementById('loadMoreButton');
 const select = document.getElementById('generation');
-let limit = 16;
+var limit = 16;
 let offset;
 let maxRecords;
 
@@ -49,10 +51,11 @@ location.reload();
 })
 const pokemonLista = document.getElementById('pokemonListen');
 
-function loadMoreItens(offset, limit){
+async function loadMoreItens(offset, limit){
      
-    pokeApi.getPokemons(offset, limit).then((pokemons = []) => {
-        const newHtml = pokemons.map((pokemon) => ` 
+    const pokemon = await pokeApi.getPokemons(offset, limit)
+    const newHtml = pokemon.map((pokemon) => ` 
+    
            <li class="${pokemon.type} pokemon">
             <span class="number">#${pokemon.number}</span>
             <span class="name">${pokemon.name}</span>
@@ -65,20 +68,19 @@ function loadMoreItens(offset, limit){
                 alt="${pokemon.name}">
             </div>
         </li>`).join("")
+
         pokemonLista.innerHTML += newHtml
-    })
-}
-
-
-loadMoreButton.addEventListener('click', () => {
-    
-    offset += limit
-    if (offset + limit > maxRecords){
-        limit =  (offset + limit) - maxRecords
-        loadMoreButton.parentElement.removeChild(loadMoreButton)
     }
+loadMoreButton.addEventListener('click', () => {
+    offset += limit
+    if (offset + limit >= maxRecords){
+        limit = (maxRecords - offset)
+        loadMoreButton.parentElement.removeChild(loadMoreButton)
+        loadMoreItens(offset, limit)
+    } else {
     
     console.log(limit)
-    loadMoreItens(offset, limit)
+    loadMoreItens(offset, limit)}
 
 })
+
