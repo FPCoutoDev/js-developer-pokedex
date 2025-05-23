@@ -6,14 +6,12 @@ const select = document.getElementById('generation');
 var limit = 16;
 let offset;
 let maxRecords;
-
 const pokemonLista = document.getElementById('pokemonListen');
 
 async function loadMoreItens(offset, limit){
      
     const pokemon = await pokeApi.getPokemons(offset, limit)
     const newHtml = pokemon.map((pokemon) => ` 
-    
            <li class="${pokemon.type} pokemon">
             <span class="number">#${pokemon.number}</span>
             <span class="name">${pokemon.name}</span>
@@ -22,13 +20,30 @@ async function loadMoreItens(offset, limit){
                     ${pokemon.types.map((type) => `<li class="type">${type}</li>`).join("")}
                 </ol>
     
-                <img src="${pokemon.photo}" 
-                alt="${pokemon.name}">
+                <img class = "imagens" data-normal="${pokemon.photo}" data-shiny="${pokemon.shinyPhoto}" src="${pokemon.photo}" 
+                alt="${pokemon.name}" title="Clique para visualizar a versão Shiny">
             </div>
         </li>`).join("")
-
         pokemonLista.innerHTML += newHtml
-    }
+    
+        const images = document.querySelectorAll('.imagens')
+        for (let i = 0; i < images.length; i++) {
+    const elementImage = images[i];
+    elementImage.addEventListener('click', function(e) {
+        if (elementImage.src === elementImage.dataset.shiny){
+          elementImage.src = elementImage.dataset.normal;
+          elementImage.title = "Clique para visualizar a versão Shiny"   
+        } else {
+        elementImage.src = elementImage.dataset.shiny;
+        elementImage.title = "Clique para voltar ao normal"
+}
+})
+}
+
+}
+
+
+
 loadMoreButton.addEventListener('click', () => {
     offset += limit
     if (offset + limit >= maxRecords){
